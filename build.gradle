@@ -1,0 +1,48 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.0'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'net.writeacode.demos'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	langchain4jVersion = "1.12.1"
+	langchain4jStarterVersion = "1.11.0-beta19"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "dev.langchain4j:langchain4j-bom:${langchain4jVersion}"
+	}
+}
+
+dependencies {
+
+	// Spring Boot
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// LangChain4j base
+	implementation "dev.langchain4j:langchain4j-spring-boot-starter:${langchain4jStarterVersion}"
+
+	// ⭐ ESTE ES EL IMPORTANTE
+	implementation "dev.langchain4j:langchain4j-ollama-spring-boot-starter:${langchain4jStarterVersion}"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
